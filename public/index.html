@@ -6,7 +6,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css"
     />
-    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
 
     <style>
@@ -74,17 +73,16 @@
       });
 
       socket.on("message", (message) => {
-  const li = document.createElement("li");
-  li.textContent = message;
-  li.className = "text-blue-700"; // Ajouter la classe de style pour la couleur verte
-  messages.appendChild(li);
+        const li = document.createElement("li");
+        li.textContent = message;
+        li.className = "text-blue-700"; // Ajouter la classe de style pour la couleur verte
+        messages.appendChild(li);
 
-  // Supprimer le message après 5 secondes
-  setTimeout(() => {
-    li.style.display = "none";
-  }, 3000);
-});
-
+        // Supprimer le message après 5 secondes
+        setTimeout(() => {
+          li.style.display = "none";
+        }, 3000);
+      });
 
       submitButton.addEventListener("click", () => {
         const guess = parseInt(guessInputField.value, 10);
