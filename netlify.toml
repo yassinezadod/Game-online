@@ -1,3 +1,8 @@
 [build]
-command = "npm run build && npm run start"
-publish = "public"
+  command = "npm run build && npm run start"
+  publish = "public"
+[build.environment]
+  NODE_VERSION = "14"
+[cache]
+  # Include the `node_modules` directory to cache dependencies
+  paths = ["node_modules/**/*", ".npm"]
