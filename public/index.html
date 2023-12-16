@@ -6,6 +6,9 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css"
     />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+
     <style>
       #guess-input {
         display: none;
@@ -47,7 +50,6 @@
         <ul id="messages" class="list-none mt-3 messages" style="display: none"></ul>
       </center>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
       const welcome = document.getElementById("welcome");
