@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jeu de Devinette</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css"
+    />
+    <style>
+      #guess-input {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-200">
+    <div class="container mx-auto mt-5">
+      <h1 class="text-center text-3xl font-semibold mb-4">Jeu de Devinette</h1>
+      <div id="welcome" class="text-center">
+        <p class="mb-4">Bienvenue ! Entrez votre nom :</p>
+        <input
+          id="playerName"
+          class="w-[150px] px-2 py-1 border"
+          placeholder="Votre nom"
+        />
+        <button
+          id="join"
+          class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 ml-2"
+        >
+          Rejoindre la partie
+        </button>
+      </div>
+      <div id="guess-input" class="text-center">
+        <input
+          id="guess"
+          type="number"
+          class="w-[150px] px-2 py-1 border mt-4"
+          placeholder="Entrez votre devinette"
+        />
+        <button
+          id="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 m-auto mt-4"
+        >
+          Soumettre
+        </button>
+      </div>
+      <center class="mt-6">
+        <ul id="messages" class="list-none mt-3 messages" style="display: none"></ul>
+      </center>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const welcome = document.getElementById("welcome");
+      const guessInput = document.getElementById("guess-input");
+      const playerNameInput = document.getElementById("playerName");
+      const joinButton = document.getElementById("join");
+      const messages = document.getElementById("messages");
+      const guessInputField = document.getElementById("guess");
+      const submitButton = document.getElementById("submit");
+
+      let playerName;
+
+      joinButton.addEventListener("click", () => {
+        playerName = playerNameInput.value;
+        if (playerName) {
+          socket.emit("join", playerName);
+          welcome.style.display = "none";
+          guessInput.style.display = "block";
+          messages.style.display = "block";
+          submitButton.style.display = "block";
+        }
+      });
+
+      socket.on("message", (message) => {
+  const li = document.createElement("li");
+  li.textContent = message;
+  li.className = "text-blue-700"; // Ajouter la classe de style pour la couleur verte
+  messages.appendChild(li);
+
+  // Supprimer le message après 5 secondes
+  setTimeout(() => {
+    li.style.display = "none";
+  }, 3000);
+});
+
+
+      submitButton.addEventListener("click", () => {
+        const guess = parseInt(guessInputField.value, 10);
+        if (!isNaN(guess)) {
+          socket.emit("guess", guess, playerName);
+          guessInputField.value = "";
+        }
+      });
+    </script>
+  </body>
+</html>
